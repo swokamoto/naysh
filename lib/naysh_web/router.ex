@@ -18,6 +18,7 @@ defmodule NayshWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/naysh", NayshController, :index
   end
 
   # Other scopes may use custom stacks.
