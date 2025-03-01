@@ -2,12 +2,13 @@ defmodule NayshWeb.Router do
   use NayshWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug :accepts, ["html", "json"]
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, html: {NayshWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug NayshWeb.Plugs.Locale, "en"
   end
 
   pipeline :api do
@@ -19,12 +20,27 @@ defmodule NayshWeb.Router do
 
     get "/", PageController, :home
     get "/naysh", NayshController, :index
+    get "/naysh/:messenger", NayshController, :show
+    get "/redirect_test", PageController, :redirect_test
+    #resources "/users", UserController do
+      #resources "/posts", PostController
+
+    resources "/reviews", ReviewController
+
+  end
+
+  scope "/admin", NayshWeb do
+    pipe_through :browser
+
+    resources "/reviews", ReviewController
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", NayshWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", NayshWeb do
+    pipe_through :api
+
+    resources "/reviews", ReviewController
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:naysh, :dev_routes) do
