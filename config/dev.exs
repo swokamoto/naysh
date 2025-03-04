@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :strongbond, Strongbond.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "tmntKA!!9200",
   hostname: "localhost",
   database: "strongbond_dev",
   stacktrace: true,
